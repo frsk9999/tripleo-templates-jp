@@ -23,7 +23,7 @@ for_xxx/ovs-ofctlの結果 : 今後の解説に使おうと思って取得した
 for_xxx/custom-undercloud-params.yaml : デバグ用
 for_xxx/deploy_overcloud.sh : デプロイ時に使うためのスクリプト(openstack overcloud deployを実行するためのスクリプト)
 for_xxx/instackenv.json : controller,computeのbaremetalノードへの登録のためのファイル(MACアドレスの書き換えが必要です)
-for_xxx/test.sh : ansibleがpython3.11でインストールされて後のエラーの原因になるので、pipで3.9をインストールして置き換えるためのスクリプト
+for_xxx/test.sh : ansibleがpython3.11でインストールされて後のエラーの原因になるので、pipでpython3.9用のansibleをインストールして置き換えるためのスクリプト
 for_xxx/undercloud.conf :アンダークラウド作成のための設定ファイル(デバグ用のyamlを呼び出す)
 for_xxx/templates/Compute-net.yaml : computeのNIC構成ファイル
 for_xxx/templates/Controller-net.yaml : controllerのNIC構成ファイル
