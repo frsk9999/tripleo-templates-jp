@@ -8,6 +8,7 @@ VMware Workstation 17 playerで3台分のVMを使ってtripleoを使ってopenst
 2パターンの設定ファイルを作成しました
 - ML2/OVNはstack/for_ovn
 - ML2/OVSはstack/for_ovs
+
 下記のような感じで丸ごと落として/home/stack直下に配置してください
 ```
 git clone https://github.com/frsk9999/tripleo-templates-jp
