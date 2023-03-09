@@ -13,7 +13,7 @@ openstack overcloud deploy --templates \
 	--libvirt-type kvm \
 	-b /home/stack/templates/overcloud-baremetal-deploy.yaml \
         -e ~/containers-prepare-parameter.yaml \
-        -e /home/stack/templates/custom_net.yaml \
+        -e /home/stack/templates/custom.yaml \
         -e /home/stack/templates/scheduler_hints_env.yaml \
         -e /home/stack/templates/ips-from-pool-all.yaml \
 	--networks-file /home/stack/templates/network_data.yaml \
