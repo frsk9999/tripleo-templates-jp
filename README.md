@@ -3,6 +3,19 @@ tripleo templates for ML2/OVN, ML2/OVS
 
 実行環境などはhowtocreate_localcloud.txtという怪文書にまとめました。
 
+VMware Workstation 17 playerで3台分のVMを使ってtripleoを使ってopenstackをインストールして動かそうという試みです。
+
+2パターンの設定ファイルを作成しました
+- ML2/OVNはstack/for_ovn
+- ML2/OVSはstack/for_ovs
+下記のような感じで丸ごと落として/home/stack直下に配置してください
+```
+git clone https://github.com/frsk9999/tripleo-templates-jp
+cp -r tripleo-templates-jp/stack/for_ovs/* /home/stack/.
+   or
+cp -r tripleo-templates-jp/stack/for_ovn/* /home/stack/.
+```
+
 大まかな設定の解説(共通)
 ```
 for_xxx/ovs-ofctlの結果 : 今後の解説に使おうと思って取得した今回の目的となるファイル(openflowがどう追加されるか)
@@ -26,4 +39,4 @@ for_xxx/templates/nics配下 : 使おうとしてやめたファイル
 ```
 
 いきなりOVNが作ったOpenFlowを読もうとするとレジスタで混乱して詰みやすいので、
-openvswitch(ovs)用である程度慣れてから読もうとすれば多少はましかも(こちらでもレジスタは使ってるけどそこまでひどくない)
+openvswitch(ovs)用である程度慣れてから読もうとすれば多少はましかも(こちらでもレジスタは使ってるけどそこまでひどくないので最初に読むにはいいのかなと)
