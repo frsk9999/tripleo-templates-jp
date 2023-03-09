@@ -4,6 +4,7 @@ tripleo templates for ML2/OVN, ML2/OVS
 実行環境などはhowtocreate_localcloud.txtという怪文書にまとめました。
 
 大まかな設定の解説(共通)
+```
 for_xxx/ovs-ofctlの結果 : 今後の解説に使おうと思って取得した今回の目的となるファイル(openflowがどう追加されるか)
 for_xxx/custom-undercloud-params.yaml : デバグ用
 for_xxx/deploy_overcloud.sh : デプロイ時に使うためのスクリプト(openstack overcloud deployを実行するためのスクリプト)
@@ -22,3 +23,7 @@ for_xxx/templates/roles_data.yaml : 各ノードの設定ファイル
 for_xxx/templates/scheduler_hints_env.yaml : 各ノードの命名規則の設定ファイル
 for_xxx/templates/vip-data.yaml : VIP(virtual ip)の設定ファイル
 for_xxx/templates/nics配下 : 使おうとしてやめたファイル
+```
+
+いきなりOVNが作ったOpenFlowを読もうとするとレジスタで混乱して詰みやすいので、
+openvswitch(ovs)用である程度慣れてから読もうとすれば多少はましかも(こちらでもレジスタは使ってるけどそこまでひどくない)
