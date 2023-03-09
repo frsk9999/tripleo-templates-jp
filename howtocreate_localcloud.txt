@@ -1,0 +1,156 @@
+物理環境
+・minisforum HX90のメモリを64GBに拡張+外付け4TB HDD構成(CPU: Ryzen 9 5900HX(8core/16thread), memory: 64GB, SSD:512GB HDD: 4TB)
+・OS: Windows10 Pro(22H2)
+
+手順
+・teratermをダウンロードしてインストール
+  https://ja.osdn.net/projects/ttssh2/
+
+・VMware Workstation 17 Playerをダウンロードしてインストール
+  https://www.vmware.com/jp/products/workstation-player.html
+
+・CentOS9(ISO)をダウンロード
+  https://centos.org/stream9/
+  今すぐ入手 -> アーキテクチャのx86_64をクリック -> ISOファイル入手
+
+・VMを作成する(HDDは外付けを利用。例えばD:¥VM配下などにVM毎のディレクトリをつくってそこに保存する)
+  1. undercloud用VM            (CPU: 4, memory: 4GB, HDD: 100GB, nic1: nat, nic2: VMnet2, nic3: VMnet3, nic4: VMnet4, isoとしてCentOS9のISOファイル)
+  2. overcloudのcontroller用VM (CPU: 6, memory:16GB, HDD: 100GB, nic1: nat, nic2: VMnet2, nic3: VMnet3, nic4: VMnet4, isoとしてCentOS9のISOファイル)
+  3. overcloudのcompute用VM    (CPU: 4, memory: 4GB, HDD: 100GB, nic1: nat, nic2: VMnet2, nic3: VMnet3, nic4: VMnet4, isoとしてCentOS9のISOファイル)
+トータルで CPU:12, memory: 24GB, HDD: 300GBを使う(nicはほとんど仮想)
+ホスト側でもリソースを使うのでいろいろと不足しがち(+動画作成環境という関係上エンコードのため(全てをオンメモリにして処理を行わせるため)に、スワップ領域=ページングファイルを機能として切っているのでさらに不足しがち)
+
+【nic毎の使用目的】
+nic1: ホストからVMに主にsshでアクセスするため+VMからそのまま外部にアクセスするため(時刻合わせ時の名前解決など)
+nic2: ctlplane (プロビジョニング用に使う)
+nic3: internal_api/tenant (内部通信(rabbitmq経由等)で使ったり、overcloudで普通にネットワークを作って使ったりする)
+nic4: external (外部接続用。なのでこっちにdashboardとかのエンドポイントができてしまうけど気にしない。あとはpublicなネットワークを作るときにはこっちを使ったりする)
+
+【前提条件】
+  ・natは192.168.44.0/24のCIDRで、192.168.44.2でdnsが動作している
+  ・VM作成後に一度VMwareを終了してからホスト側でVMの設定をいじくりまわす必要がある
+    VM名.vmxファイルはテキストファイルなので、これを適当なエディタを使って修正する(少なくともfirmware = "efi"の行を入れて上書きする)
+【手順】
+  ・VMを起動してOSをインストールする
+    おすすめ設定は
+    言語設定:English
+     Software Selectionの設定: Server with GUI -> Serverに変更
+     rootのパスワード: パスワード設定してsshでログイン可能(Allow root SSH login with password)にチェック
+  ・一旦dnf -y updateで更新をかける
+
+ここからundercloud用VMのみ起動して実行する
+
+・基本的な手順は下記参照
+https://docs.openstack.org/project-deploy-guide/tripleo-docs/latest/deployment/install_undercloud.html
+
+以下注意点
+・openstackコマンドを実行する前に下記の修正を実施する(https://bugs.launchpad.net/tripleo/+bug/2007659 が解消したら多分不要)
+  ・ansibleをpipで入れ直す(python3.9のansibleとansible-coreを入れる)
+  ・/usr/bin/ansible,/bin/ansible-playbookを/usr/local/bin/のものに差し替える
+    例えばこんな感じ(stackユーザで実行している前提)
+sudo pip install ansible ansible-core
+sudo mv /usr/bin/ansible /usr/bin/ansible.bk
+sudo cp -p /usr/local/bin/ansible /usr/bin/ansible
+sudo mv /bin/ansible-playbook /bin/ansible-playbook.bk
+sudo cp -p /usr/local/bin/ansible-playbook /bin/ansible-playbook
+
+・undercloudインストール後、/etc/ssh/sshd_configが上書きされるので、必要に応じて末尾辺りに
+PermitRootLogin yes
+PasswordAuthentication yes
+を追加して
+systemctl restart sshd
+を実行
+
+・仮にfirewalldが起動していたら止めておくこと
+(必要なポートをあける方法でもいいけどundercloud用VMがサーバとしていろいろ動くので外しておいた方が無難)
+sudo systemctl stop firewalld
+sudo systemctl disable fierwalld
+
+【参考情報】
+・ctlplaneの設定は基本的にそのままで大丈夫(192.168.24.0/24を他で使っている場合は変える必要がある)
+
+
+ここからはovercloudの設定
+以降ではovercloudのcontroller用VMをcontroller、overcloudのcompute用のVMをcomputeと略して記載する
+・controller の nic2と computeの nic2のmacアドレスを取得
+  Player->管理->仮想マシンの設定->ハードウェアタブ内のネットワーク アダプタ 2->右下の詳細をクリック->一番下にMACアドレスが出てくる
+
+undercloud用VMでの作業
+・instackenv.jsonの作成(名前はなんでもいいけど.jsonにする)
+  ->上で得たMACアドレスをnodes->port->addressに記載する
+
+・基本的な手順は下記参照
+https://docs.openstack.org/project-deploy-guide/tripleo-docs/latest/deployment/install_overcloud.html
+
+以下注意点
+・イメージを作るときCentOS8を持ってこようとするので、CentOS9を持ってこさせる
+export DIB_RELEASE=9
+openstack overcloud image build \
+    --config-file /usr/share/openstack-tripleo-common/image-yaml/overcloud-images-python3.yaml \
+    --config-file /usr/share/openstack-tripleo-common/image-yaml/overcloud-images-centos9.yaml \
+    --config-file $OS_YAML
+
+・openstack overcloud image upload実行前(必要であれば。入れておくと何かと便利)
+sudo mount  ~/overcloud-full.raw /media
+sudo chroot /media
+password
+でrootパスワードを変更後
+exit
+cd
+sudo umount /media
+
+・openstack overcloud node import --introspect --provide instackenv.json 実行時
+TASK | Start baremetal introspection 
+と出て止まるので
+controllerとcomputeをNIC指定で起動(起動選択時にEFIに入れる選択枝(UEFI Firmware Settings)が最後にあるのでそこからEFIに入ってEFI Network 1で起動する)
+iPXEで起動してagent.kernelとかが読み込まれて一旦起動する
+そのまま放置するとしばらくしてipmiのエラー(再起動要求と思われる)が発生して止まる
+
+コマンド終了後に再度両方のVMを再起動(NIC1で起動し直す)
+起動中にdeploy_kernelとかが読み込まれる
+起動完了するとしばらく動き続けるので一旦待つ(なお、完了すると内部は空になる模様)
+
+ここまで出来たらundercloud側でopenstack baremetal node list を実行してみると両方のノードのProvisioning Stateがavailableになっているはず
+
+
+・ctlplaneのルートをdeafult gwとしてrouting tableに登録されないようにするため+dnsサーバはVMwareの組み込みnatにしておくために下記コマンドを実行
+openstack subnet set ctlplane-subnet --dns-nameserver 192.168.44.2
+openstack subnet unset ctlplane-subnet --gateway
+
+
+・overcloud側からundercloud側へのpodmanのコンテナイメージpullで失敗したことがあったので念のため下記を変更
+(undercloudのプライベートレジストリ(image-serve)からovercloud側に持ってくる処理でエラーになったが、firewalldが有効になっていたこととも重なっていたので要らないかも)
+undercloud上の/etc/httpd/conf.d/image-serve.confの設定を変更(1行)
+----
+#    SetEnvIf X-Forwarded-Proto https HTTPS=1
+    SetEnvIf X-Forwarded-Proto http HTTPS=0
+----
+systemctl restart httpd を実行
+
+
+その状態でデプロイを実施
+TASK | Provision instances
+と出て止まるのでVMを再起動
+今度はipxe起動後にインストールが走ってOSが入って一旦VMが停止するのでVMを起動する
+
+以降は特に何もせず終わるのを待てばよい
+
+終わったらovercloudrcというファイルができるので、sourceや.で読み込ませて使ったり、パスワードが入ってるのでcatで表示して利用したりする(ちなみにユーザ名はadmin、パスワードは指定しなければランダム)
+teratermのssh転送を使ってホスト側からブラウザ経由で見てもいいしコマンド打ってもいい
+
+----
+・その他
+ovn用はドキュメントとか見まくって作った
+ovs用はそれに加えて/usr/share/openstack-tripleo-heat-templates/ci/environments/scenario007-multinode-containers.yamlを主に参照して作った
+
+ちなみに、controllerとcomputeはnft(nftables)でアクセス制限がつけられているので、基本的には外部から直接参照はできない
+undercloud側でstackになったうえで、tripleo-admin@192.168.24.101 (192.168.24.101はcompute-0のctlplaneのアドレス)などでアクセスするか
+nftablesにルールを設定し直せばアクセスできるようにはなる(undercloud側から入ってsudo nft list ruleset > temp.txtで出力したファイルを編集してsudo nft flush ruleset; sudo nft -f temp.txt という感じで更新する)
+
+OVN用の設定をしたcompute上のsudo ovs-ofctl dump-flows br-intは難解だけど1つにまとまってはいる(レジスタを容赦なく使うので読みにくい)
+OVS用の設定をしたcompute上のsudo ovs-ofctl dump-flows br-intは読みやすいが、実はnft list rulesで見るとがっつりルールが入っている
+-> OpenFlowの実践勉強にはなるので、最初はOVS側で理解して(鍛えて)、OVN側にいった方がとっつきやすいと思われる
+   ので敢えてOVSの奴を作ってみた
+
+本当は物理マシンが3台以上あればいいんだろうけど、今回は全部仮想化でやってみましたよと。
+
