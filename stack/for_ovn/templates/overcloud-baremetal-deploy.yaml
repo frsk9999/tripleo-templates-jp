@@ -1,0 +1,46 @@
+---
+- name: Controller
+  count: 1
+  defaults:
+    profile: controller
+  instances:
+    - hostname: overcloud-controller-0
+      name: controller-0
+      managed: true
+      networks:
+      - network: ctlplane
+        subnet: ctlplane-subnet
+        fixed_ip: 192.168.24.100
+        vif: true
+      - network: external
+        subnet: external_subnet
+        fixed_ip: 10.0.0.5
+      - network: internal_api
+        subnet: internal_api_subnet
+        fixed_ip: 172.16.1.5
+      - network: tenant
+        subnet: tenant_subnet
+        fixed_ip: 172.16.0.5
+
+- name: Compute
+  count: 1
+  defaults:
+    profile: compute
+  instances:
+    - hostname: overcloud-compute-0
+      name: compute-0
+      managed: true
+      networks:
+      - network: ctlplane
+        subnet: ctlplane-subnet
+        fixed_ip: 192.168.24.101
+        vif: true
+      - network: external
+        subnet: external_subnet
+        fixed_ip: 10.0.0.6
+      - network: internal_api
+        subnet: internal_api_subnet
+        fixed_ip: 172.16.1.6
+      - network: tenant
+        subnet: tenant_subnet
+        fixed_ip: 172.16.0.6

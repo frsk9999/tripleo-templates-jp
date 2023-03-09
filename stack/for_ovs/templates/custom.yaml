@@ -1,0 +1,42 @@
+parameter_defaults:
+  TimeZone: 'Asia/Tokyo'
+  ControllerNetworkConfigTemplate: '/home/stack/templates/Controller-net.yaml'
+  ComputeNetworkConfigTemplate: '/home/stack/templates/Compute-net.yaml'
+  NeutronExternalNetworkBridge: "'br-ex'"
+  NeutronNetworkType: 'vxlan,vlan'
+  NeutronTunnelType: 'vxlan'
+  NeutronBridgeMapping: 'datacentre:br-ex'
+  NeutronMechanismDrivers: openvswitch
+  NeutronServicePlugins: 'router,qos,segments,trunk'
+  NeutronPublicInterface: nic4
+  NovaComputeLibvirtType: 'qemu'
+  OVNEncapType: 'vxlan'
+  KernelIpv4ConfAllRpFilter: 0
+  KernelDisableIPv6: 1
+  CloudDomain: 'example.com'
+  CloudName: 'overcloud.example.com'
+  CloudNameCtlplane: 'overcloud.ctlplane.example.com'
+  CloudNameInternal: 'overcloud.internalapi.example.com'
+  GlanceBackend: 'file'
+  IronicCleaningDiskErase: 'metadata'
+  NotificationDriver: 'noop'
+
+resource_registry:
+  OS::TripleO::Services::NeutronMl2PluginBase: /usr/share/openstack-tripleo-heat-templates/deployment/neutron/neutron-plugin-ml2.yaml
+  OS::TripleO::Services::NeutronApi: /usr/share/openstack-tripleo-heat-templates/deployment/neutron/neutron-api-container-puppet.yaml
+  OS::TripleO::Services::NeutronCorePlugin: /usr/share/openstack-tripleo-heat-templates/deployment/neutron/neutron-plugin-ml2-container-puppet.yaml
+  OS::TripleO::Services::NeutronMetadataAgent: /usr/share/openstack-tripleo-heat-templates/deployment/neutron/neutron-metadata-container-puppet.yaml
+  OS::TripleO::Services::NeutronOvsAgent: /usr/share/openstack-tripleo-heat-templates/deployment/neutron/neutron-ovs-agent-container-puppet.yaml
+  OS::TripleO::Services::NeutronDhcpAgent: /usr/share/openstack-tripleo-heat-templates/deployment/neutron/neutron-dhcp-container-puppet.yaml
+  OS::TripleO::Services::NeutronL3Agent: /usr/share/openstack-tripleo-heat-templates/deployment/neutron/neutron-l3-container-puppet.yaml
+  OS::TripleO::Services::ComputeNeutronOvsAgent: /usr/share/openstack-tripleo-heat-templates/deployment/neutron/neutron-ovs-agent-container-puppet.yaml
+
+  OS::TripleO::Services::NovaMigrationTarget: OS::Heat::None
+  OS::TripleO::Services::SwiftProxy: OS::Heat::None
+  OS::TripleO::Services::SwiftStorage: OS::Heat::None
+  OS::TripleO::Services::SwiftRingBuilder: OS::Heat::None
+
+  OS::TripleO::Services::OVNController: OS::Heat::None
+  OS::TripleO::Services::OVNDBs: OS::Heat::None
+  OS::TripleO::Services::OVNMetadataAgent: OS::Heat::None
+

@@ -1,0 +1,16 @@
+それぞれのタイミングで下記を実行した結果をいったんログに出力
+ssh tripleo-admin@192.168.24.101 sudo ovs-ofctl dump-flows br-int
+状態:
+・plane ->作り立てで何も作られていない状態
+・net -> networkを作った状態
+・subnet -> netwok上にsubnetを作った状態
+・vm -> subnet上にportが作られた状態
+
+差分をとりやすいように修正
+cat openflow_ovn_plane.log  | sed -e 's/duration=\([[:digit:]\.]*\)s, //g' | sed -e 's/n_bytes=\([[:digit:]]\)*, //' | sed -e 's/n_packets=\([[:digit:]]\)*, //g' | sed -e 's/idle_age=\([[:digit:]]*\), //g' >openflow_ovn_plane_edit.log
+cat openflow_ovn_net.log  | sed -e 's/duration=\([[:digit:]\.]*\)s, //g' | sed -e 's/n_bytes=\([[:digit:]]\)*, //' | sed -e 's/n_packets=\([[:digit:]]\)*, //g' | sed -e 's/idle_age=\([[:digit:]]*\), //g' >openflow_ovn_net_edit.log
+cat openflow_ovn_subnet.log  | sed -e 's/duration=\([[:digit:]\.]*\)s, //g' | sed -e 's/n_bytes=\([[:digit:]]\)*, //' | sed -e 's/n_packets=\([[:digit:]]\)*, //g' | sed -e 's/idle_age=\([[:digit:]]*\), //g' >openflow_ovn_subnet_edit.log
+cat openflow_ovn_vm.log  | sed -e 's/duration=\([[:digit:]\.]*\)s, //g' | sed -e 's/n_bytes=\([[:digit:]]\)*, //' | sed -e 's/n_packets=\([[:digit:]]\)*, //g' | sed -e 's/idle_age=\([[:digit:]]*\), //g' >openflow_ovn_vm_edit.log
+
+→OVNからだと学習しにくい気がする
+

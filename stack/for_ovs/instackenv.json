@@ -1,0 +1,40 @@
+{
+	"nodes": [
+		{
+			"name": "controller-0",
+			"pm_type": "manual-management",
+			"ports": [
+				{
+					"address": "00:0c:29:27:0d:20",
+					"physical_network": "ctlplane"
+				}
+			],
+			"cpu": "4",
+			"memory": "8192",
+			"disk": "100",
+			"arch": "x86_64",
+			"profile": "controller",
+			"boot_mode": "uefi",
+			"pm_user": "root",
+			"pm_pasword": "root123"
+		},
+		{
+			"name": "compute-0",
+			"pm_type": "manual-management",
+			"ports": [
+				{
+					"address": "00:0c:29:dc:55:50",
+					"physical_network": "ctlplane"
+				}
+			],
+			"cpu": "4",
+			"memory": "8192",
+			"disk": "100",
+			"arch": "x86_64",
+			"profile": "compute",
+			"boot_mode": "uefi",
+			"pm_user": "root",
+			"pm_password": "root123"
+		}
+	]
+}

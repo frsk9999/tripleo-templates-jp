@@ -1,0 +1,24 @@
+NXST_FLOW reply (xid=0x4):
+ cookie=0xd43f9340c7484644, table=0, priority=65535,dl_vlan=4095 actions=drop
+ cookie=0x2dc60af79214fb5b, table=0, priority=200,reg3=0 actions=set_queue:0,load:0x1->NXM_NX_REG3[0],resubmit(,0)
+ cookie=0xd43f9340c7484644, table=0, priority=10,icmp6,in_port=3,icmp_type=136 actions=resubmit(,24)
+ cookie=0xd43f9340c7484644, table=0, priority=10,icmp6,in_port=4,icmp_type=136 actions=resubmit(,24)
+ cookie=0xd43f9340c7484644, table=0, priority=10,arp,in_port=3 actions=resubmit(,24)
+ cookie=0xd43f9340c7484644, table=0, priority=10,arp,in_port=4 actions=resubmit(,24)
+ cookie=0xd43f9340c7484644, table=0, priority=2,in_port=1 actions=drop
+ cookie=0xd43f9340c7484644, table=0, priority=9,in_port=3 actions=resubmit(,25)
+ cookie=0xd43f9340c7484644, table=0, priority=9,in_port=4 actions=resubmit(,25)
+ cookie=0xd43f9340c7484644, table=0, priority=0 actions=resubmit(,58)
+ cookie=0xd43f9340c7484644, table=23, priority=0 actions=drop
+ cookie=0xd43f9340c7484644, table=24, priority=2,icmp6,in_port=3,icmp_type=136,nd_target=fe80::f816:3eff:fe51:ad0c actions=resubmit(,58)
+ cookie=0xd43f9340c7484644, table=24, priority=2,icmp6,in_port=4,icmp_type=136,nd_target=fe80::f816:3eff:fe06:d8e7 actions=resubmit(,58)
+ cookie=0xd43f9340c7484644, table=24, priority=2,arp,in_port=3,arp_spa=192.168.200.163 actions=resubmit(,25)
+ cookie=0xd43f9340c7484644, table=24, priority=2,arp,in_port=4,arp_spa=192.168.200.130 actions=resubmit(,25)
+ cookie=0xd43f9340c7484644, table=24, priority=0 actions=drop
+ cookie=0xd43f9340c7484644, table=25, priority=2,in_port=3,dl_src=fa:16:3e:51:ad:0c actions=resubmit(,30)
+ cookie=0xd43f9340c7484644, table=25, priority=2,in_port=4,dl_src=fa:16:3e:06:d8:e7 actions=resubmit(,30)
+ cookie=0xd43f9340c7484644, table=30, priority=0 actions=resubmit(,58)
+ cookie=0xd43f9340c7484644, table=31, priority=0 actions=resubmit(,58)
+ cookie=0xd43f9340c7484644, table=58, priority=0 actions=resubmit(,60)
+ cookie=0xd43f9340c7484644, table=60, priority=3 actions=NORMAL
+ cookie=0xd43f9340c7484644, table=62, priority=3 actions=NORMAL

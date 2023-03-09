@@ -1,0 +1,11 @@
+NXST_FLOW reply (xid=0x4):
+ cookie=0xd43f9340c7484644, table=0, priority=65535,dl_vlan=4095 actions=drop
+ cookie=0xd43f9340c7484644, table=0, priority=2,in_port=1 actions=drop
+ cookie=0xd43f9340c7484644, table=0, priority=0 actions=resubmit(,58)
+ cookie=0xd43f9340c7484644, table=23, priority=0 actions=drop
+ cookie=0xd43f9340c7484644, table=24, priority=0 actions=drop
+ cookie=0xd43f9340c7484644, table=30, priority=0 actions=resubmit(,58)
+ cookie=0xd43f9340c7484644, table=31, priority=0 actions=resubmit(,58)
+ cookie=0xd43f9340c7484644, table=58, priority=0 actions=resubmit(,60)
+ cookie=0xd43f9340c7484644, table=60, priority=3 actions=NORMAL
+ cookie=0xd43f9340c7484644, table=62, priority=3 actions=NORMAL

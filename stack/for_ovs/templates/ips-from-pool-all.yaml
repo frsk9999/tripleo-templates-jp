@@ -1,0 +1,25 @@
+# Environment file demonstrating how to pre-assign IPs to all node types
+
+parameter_defaults:
+  ControllerIPs:
+    # Each controller will get an IP from the lists below, first controller, first IP
+    ctlplane:
+      - 192.168.24.100
+    external:
+      - 10.0.0.5
+    internal_api:
+      - 172.16.1.5
+    tenant:
+      - 172.16.0.5
+    #management:
+    #- 172.16.4.251
+  ComputeIPs:
+    # Each compute will get an IP from the lists below, first compute, first IP
+    ctlplane:
+      - 192.168.24.101
+    internal_api:
+      - 172.16.1.6
+    tenant:
+      - 172.16.0.6
+    #management:
+    #- 172.16.4.252

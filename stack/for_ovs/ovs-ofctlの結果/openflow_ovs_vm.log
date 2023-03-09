@@ -1,0 +1,18 @@
+NXST_FLOW reply (xid=0x4):
+ cookie=0xd43f9340c7484644, duration=2516.071s, table=0, n_packets=0, n_bytes=0, idle_age=2516, priority=65535,dl_vlan=4095 actions=drop
+ cookie=0x2dc60af79214fb5b, duration=1487.675s, table=0, n_packets=46, n_bytes=3480, idle_age=1, priority=200,reg3=0 actions=set_queue:0,load:0x1->NXM_NX_REG3[0],resubmit(,0)
+ cookie=0xd43f9340c7484644, duration=48.040s, table=0, n_packets=0, n_bytes=0, idle_age=49, priority=10,icmp6,in_port=3,icmp_type=136 actions=resubmit(,24)
+ cookie=0xd43f9340c7484644, duration=48.038s, table=0, n_packets=33, n_bytes=1386, idle_age=1, priority=10,arp,in_port=3 actions=resubmit(,24)
+ cookie=0xd43f9340c7484644, duration=2515.045s, table=0, n_packets=0, n_bytes=0, idle_age=2515, priority=2,in_port=1 actions=drop
+ cookie=0xd43f9340c7484644, duration=48.041s, table=0, n_packets=13, n_bytes=2094, idle_age=11, priority=9,in_port=3 actions=resubmit(,25)
+ cookie=0xd43f9340c7484644, duration=2516.074s, table=0, n_packets=0, n_bytes=0, idle_age=2516, priority=0 actions=resubmit(,58)
+ cookie=0xd43f9340c7484644, duration=2516.075s, table=23, n_packets=0, n_bytes=0, idle_age=2516, priority=0 actions=drop
+ cookie=0xd43f9340c7484644, duration=48.040s, table=24, n_packets=0, n_bytes=0, idle_age=48, priority=2,icmp6,in_port=3,icmp_type=136,nd_target=fe80::f816:3eff:fe51:ad0c actions=resubmit(,58)
+ cookie=0xd43f9340c7484644, duration=48.039s, table=24, n_packets=0, n_bytes=0, idle_age=48, priority=2,arp,in_port=3,arp_spa=192.168.200.163 actions=resubmit(,25)
+ cookie=0xd43f9340c7484644, duration=2516.072s, table=24, n_packets=33, n_bytes=1386, idle_age=1, priority=0 actions=drop
+ cookie=0xd43f9340c7484644, duration=48.043s, table=25, n_packets=13, n_bytes=2094, idle_age=11, priority=2,in_port=3,dl_src=fa:16:3e:51:ad:0c actions=resubmit(,30)
+ cookie=0xd43f9340c7484644, duration=2516.070s, table=30, n_packets=13, n_bytes=2094, idle_age=11, priority=0 actions=resubmit(,58)
+ cookie=0xd43f9340c7484644, duration=2516.070s, table=31, n_packets=0, n_bytes=0, idle_age=2516, priority=0 actions=resubmit(,58)
+ cookie=0xd43f9340c7484644, duration=2516.073s, table=58, n_packets=13, n_bytes=2094, idle_age=11, priority=0 actions=resubmit(,60)
+ cookie=0xd43f9340c7484644, duration=2516.073s, table=60, n_packets=13, n_bytes=2094, idle_age=11, priority=3 actions=NORMAL
+ cookie=0xd43f9340c7484644, duration=2516.071s, table=62, n_packets=0, n_bytes=0, idle_age=2516, priority=3 actions=NORMAL

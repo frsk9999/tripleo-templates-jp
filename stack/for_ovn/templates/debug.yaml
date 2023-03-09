@@ -1,0 +1,4 @@
+parameter_defaults:
+  Debug: True
+  ConfigDebug: True
+  HeatDebug: True

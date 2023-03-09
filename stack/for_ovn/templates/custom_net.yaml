@@ -1,0 +1,17 @@
+parameter_defaults:
+  TimeZone: 'Asia/Tokyo'
+  ControllerNetworkConfigTemplate: '/home/stack/templates/Controller-net.yaml'
+  ComputeNetworkConfigTemplate: '/home/stack/templates/Compute-net.yaml'
+  NeutronExternalNetworkBridge: "'br-ex'"
+  NeutronNetworkType: 'vxlan,vlan'
+  NeutronTunnelType: 'vxlan'
+  NeutronBridgeMapping: 'datacentre:br-ex'
+  NeutronMechanismDrivers: ovn
+  NeutronPublicInterface: nic4
+  OVNEncapType: 'vxlan'
+  KernelIpv4ConfAllRpFilter: 0
+  KernelDisableIPv6: 1
+  CloudDomain: 'example.com'
+  CloudName: 'overcloud.example.com'
+  CloudNameCtlplane: 'overcloud.ctlplane.example.com'
+  CloudNameInternal: 'overcloud.internalapi.example.com'

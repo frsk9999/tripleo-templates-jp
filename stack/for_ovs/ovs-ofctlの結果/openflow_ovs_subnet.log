@@ -1,0 +1,11 @@
+NXST_FLOW reply (xid=0x4):
+ cookie=0xd43f9340c7484644, duration=901.683s, table=0, n_packets=0, n_bytes=0, idle_age=901, priority=65535,dl_vlan=4095 actions=drop
+ cookie=0xd43f9340c7484644, duration=900.657s, table=0, n_packets=0, n_bytes=0, idle_age=900, priority=2,in_port=1 actions=drop
+ cookie=0xd43f9340c7484644, duration=901.686s, table=0, n_packets=0, n_bytes=0, idle_age=901, priority=0 actions=resubmit(,58)
+ cookie=0xd43f9340c7484644, duration=901.687s, table=23, n_packets=0, n_bytes=0, idle_age=901, priority=0 actions=drop
+ cookie=0xd43f9340c7484644, duration=901.684s, table=24, n_packets=0, n_bytes=0, idle_age=901, priority=0 actions=drop
+ cookie=0xd43f9340c7484644, duration=901.682s, table=30, n_packets=0, n_bytes=0, idle_age=901, priority=0 actions=resubmit(,58)
+ cookie=0xd43f9340c7484644, duration=901.682s, table=31, n_packets=0, n_bytes=0, idle_age=901, priority=0 actions=resubmit(,58)
+ cookie=0xd43f9340c7484644, duration=901.685s, table=58, n_packets=0, n_bytes=0, idle_age=901, priority=0 actions=resubmit(,60)
+ cookie=0xd43f9340c7484644, duration=901.685s, table=60, n_packets=0, n_bytes=0, idle_age=901, priority=3 actions=NORMAL
+ cookie=0xd43f9340c7484644, duration=901.683s, table=62, n_packets=0, n_bytes=0, idle_age=901, priority=3 actions=NORMAL
