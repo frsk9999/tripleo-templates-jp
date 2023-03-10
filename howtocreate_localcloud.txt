@@ -79,6 +79,11 @@ undercloud用VMでの作業
 ・instackenv.jsonの作成(名前はなんでもいいけど.jsonにする)
   ->上で得たMACアドレスをnodes->port->addressに記載する
 
+・vlan10の設定をしておく
+/etc/sysconfig/network-scripts/にifcfg-vlan10を配置して
+systemctl restart network
+などで読み込ませる
+
 ・基本的な手順は下記参照
 https://docs.openstack.org/project-deploy-guide/tripleo-docs/latest/deployment/install_overcloud.html
 
