@@ -5,6 +5,8 @@ tripleo templates for ML2/OVN, ML2/OVS
 
 VMware Workstation 17 playerで3台分のVMを使ってtripleoを使ってopenstackをインストールして動かそうという試みです。
 
+※念のため仕事で使う場合はVMware Workstation Playerではなく商用のライセンスを得たものを使ってください(個人の趣味の範囲から逸脱するので)
+
 2パターンの設定ファイルを作成しました
 - ML2/OVNはstack/for_ovn
 - ML2/OVSはstack/for_ovs
